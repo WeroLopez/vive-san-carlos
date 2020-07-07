@@ -1,0 +1,19 @@
+<div class="background d-flex justify-content-center align-items-center">
+    <div class="center-card">
+        <mat-card>
+            <div class="row" style="margin: 0 5px 5px 5px">
+                <mat-form-field appearance="standard" class="col-12">
+                    <mat-label>Correo</mat-label>
+                    <input matInput [(ngModel)]="email">
+                </mat-form-field>
+                <mat-form-field appearance="standard" class="col-12">
+                    <mat-label>Contraseña</mat-label>
+                    <input matInput type="password" [(ngModel)]="password">
+                </mat-form-field>
+            </div>
+            <mat-card-actions class="d-flex justify-content-center" style="margin: 5px 0px 10px 0px">
+                <button mat-raised-button color="accent" (click)="enter()">ENTRAR</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>

@@ -1,0 +1,156 @@
+<navbar-admin></navbar-admin>
+
+<div style="height: 12px;"></div>
+
+<div class="row responsive-body">
+    
+    <!-- Title -->
+    <div class="col-12">
+        <div class="d-flex justify-content-center">
+            <div class="booking" style="text-align: center;">Reservaciones</div>    
+        </div>
+        <div class="d-flex justify-content-center" style="margin-bottom: 10px;">
+            <!--<mat-form-field style="width: 200px;">
+                <mat-label>Cliente</mat-label>
+                <mat-select [(value)]="selectedClient">
+                    <mat-option *ngFor="let client of clients" [value]="client">
+                        {{client.name}} {{client.lastname}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>-->
+            <mat-form-field style="width: 200px;">
+                <input matInput type="text" placeholder="Cliente"
+                    [formControl]="myControl" [matAutocomplete]="auto">
+                <mat-autocomplete disabled="true" autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="onSelectionClientChange($event)">
+                <mat-option *ngFor="let client of filteredClients | async" [value]="client">
+                    {{client}}
+                </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        </div>
+    </div>
+    
+    <!-- Calendar -->
+    <div class="col-lg-7 col-sm-12 calendar">
+
+        <div class="d-flex justify-content-between">
+            <button mat-button (click)="buttonSetLastMonth()" color="accent"><mat-icon>keyboard_arrow_left</mat-icon></button>
+            <p class="p-month" style="padding-top: 5px;">{{displayedMonth}} {{displayedYear}}</p>
+            <button mat-button (click)="buttonSetNextMonth()" color="accent"><mat-icon>keyboard_arrow_right</mat-icon></button>
+        </div>
+
+        <mat-grid-list cols="7" rowHeight="4:3" [gutterSize]="'-1px'">
+            <mat-grid-tile *ngFor="let day of weekDays;">
+                <p class="p-day-names">{{day}}</p>
+            </mat-grid-tile>
+        </mat-grid-list>
+        <mat-divider></mat-divider>
+        <div class="calendar-scroll">
+            <mat-grid-list cols="7" rowHeight="4:3" [gutterSize]="'-1px'">
+                <mat-grid-tile *ngFor="let d of days; let i = index">
+                    <div *ngIf="(d.state != 'blank' && d.state != 'invisible') 
+                                && d.selectedType == 'end'" 
+                        style="width: 40%; height: 80%; cursor: pointer;"
+                        [ngClass]="{
+                            'background-primary': d.state == 'booked',
+                            'background-accent': d.state == 'selected',
+                            'background-warn': d.state == 'invalid',
+                            'background-primaryDark': d.state == 'bookedSelected',
+                            'background-apart': d.state == 'apart',
+                            'background-apartDark': d.state == 'apartSelected'
+                        }"
+                        (click)="clickDay(i, d)">
+                    </div>
+                    <div [ngClass]="{
+                            'day-blank': d.state == 'blank',
+                            'day-filled': d.state != 'blank' && d.state != 'invisible',
+                            'day-filled-start': d.selectedType == 'start',
+                            'day-filled-middle': d.selectedType == 'middle',
+                            'day-filled-end': d.selectedType == 'end',
+                            'background-primary': d.state == 'booked',
+                            'background-accent': d.state == 'selected',
+                            'background-warn': d.state == 'invalid',
+                            'background-primaryDark': d.state == 'bookedSelected',
+                            'background-apart': d.state == 'apart',
+                            'background-apartDark': d.state == 'apartSelected'
+                        }" 
+                        class="d-flex justify-content-center align-items-center"
+                        style="cursor: pointer;"
+                        (click)="clickDay(i, d)"
+                        (mouseenter)="mouseEnterDay(i, d)"
+                        (mouseleave)="mouseLeaveDay(i, d)">
+                        <p class="p-day" *ngIf="d.date.getFullYear() != 1000">{{d.date.getDate()}}</p>
+                    </div>
+                    <div *ngIf="(d.state != 'blank' && d.state != 'invisible') 
+                                && d.selectedType == 'start'" 
+                        style="width: 40%; height: 80%; cursor: pointer;"
+                        [ngClass]="{
+                            'background-primary': d.state == 'booked',
+                            'background-accent': d.state == 'selected',
+                            'background-warn': d.state == 'invalid',
+                            'background-primaryDark': d.state == 'bookedSelected',
+                            'background-apart': d.state == 'apart',
+                            'background-apartDark': d.state == 'apartSelected'
+                        }"
+                        (click)="clickDay(i, d)">
+                    </div>
+                </mat-grid-tile>
+            </mat-grid-list>
+        </div>
+    </div>
+
+    <!-- Selected -->
+    <div class="col-lg-5 col-sm-12 selected">
+        <p class="p-selected">Seleccionado</p>
+        <div class="selected-scroll">
+            <div *ngFor="let n of [0]; let i = index">
+                <div class="row">
+                    <div class="col-8 item-title">Casa de verano sin fin</div>
+                    <mat-form-field class="col-4" style="width: 100%;">
+                        <mat-label class="input-price">Precio</mat-label>
+                        <span class="input-price" matPrefix>$ &nbsp;</span>
+                        <input matInput style="font-size: 1.3vw;" 
+                        [(ngModel)]="price" (ngModelChange)="changePrice()">
+                    </mat-form-field>
+                </div>
+                <div class="row" style="margin-top: 0px;">
+                    <div class="col-12">
+                        <div class="item-word">Desde:</div>
+                        <div class="item-date">{{firstDaySelected | selectedDatePipe}}</div>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 15px;">
+                    <div class="col-12">
+                        <div class="item-word">Hasta:</div>
+                        <div class="item-date">{{secondDaySelected | selectedDatePipe}}</div>
+                    </div>
+                </div>
+                <div *ngIf="selectedBooking.state == 'apart'" class="row" style="margin-bottom: 15px;">
+                    <div class="col-12">
+                        <div class="item-word">Anticipo:</div>
+                        <div class="item-date">{{selectedBooking.payed | pricePipe}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-6">
+                <div class="item-total" style="float: left; margin-right: 10px;">Total:</div>
+                <div class="item-total-days">{{totalDays}} días</div>
+            </div>
+            <div class="col-6 item-price">$ {{totalPrice}}</div>
+        </div>
+        <div *ngIf="selectedBooking.state == ''" class="d-flex justify-content-around" style="margin-top: 25px;">
+            <button mat-raised-button (click)="apart()">APARTAR</button>
+            <button mat-raised-button color="accent" (click)="book()">RESERVAR</button>
+        </div>
+        <div *ngIf="selectedBooking.state == 'booked'" class="d-flex justify-content-around" style="margin-top: 25px;">
+            <button mat-raised-button color="warn" (click)="deleteBooking()">ELIMINAR</button>
+        </div>
+        <div *ngIf="selectedBooking.state == 'apart'" class="d-flex justify-content-around" style="margin-top: 25px;">
+            <button mat-raised-button color="warn" (click)="deleteBooking()">ELIMINAR</button>
+            <button mat-raised-button color="accent" (click)="liquidate()">LIQUIDAR</button>
+        </div>
+    </div>
+</div>

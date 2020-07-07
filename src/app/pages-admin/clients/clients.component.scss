@@ -1,0 +1,53 @@
+@import "../../../colors.scss";
+
+/* For PC: */
+.responsive-body {
+    padding: 5vh 15vw 0 15vw;
+}
+/* For tablets: */
+@media only screen and (max-width:991px) {
+    .responsive-body {
+        padding: 5vh 5vw 0 5vw;
+    }
+}
+/* For mobile phones: */
+@media only screen and (max-width:575px) {
+    .responsive-body {
+        padding: 5vh 0 0 0;
+    }
+}
+
+/* Title */
+.booking {
+    font-family: Signatra; 
+    font-size: 5em;
+    color: $primary;
+}
+/* Title */
+
+/* Table */
+.table-header {
+    color: $primary;
+}
+.table-row {
+    padding-top: 15px;
+}
+.table-row:hover {
+    cursor: pointer;
+    color: $primary;
+}
+.table-row:active {
+    color: $accent;
+}
+.table-row-selected { 
+    color: $accent;
+}
+/* Table */
+
+/* Buttons */
+button.mat-raised-button {
+    height: 40px;
+    border-radius: 40px;
+    padding: 0 30px 0 30px;
+}
+/* Buttons */

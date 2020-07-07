@@ -1,0 +1,127 @@
+<navbar-landing></navbar-landing>
+
+<div class="navbar-landing">
+    <div style="float: left; display: block; text-align: center; color: white;
+    padding: 15px; font-family: Signatra; font-size: 1.8em; margin-top: -9px;">
+        Vive San Carlos</div>
+    <a>Casa de Verano Sin Fin</a>
+    <a>Yatchs</a>
+    <button mat-stroked-button color="accent" style="margin: 9px;" (click)="book()">BOOK TODAY!</button>
+</div>
+
+<div class="video d-flex align-items-center justify-content-center">
+    <div class="d-flex flex-column">
+        <div class="video-title">
+            Vive San Carlos
+        </div>
+        <div class="d-flex justify-content-center">
+            <button mat-raised-button color="accent" class="video-button">BOOK TODAY!</button>
+        </div>
+    </div>
+</div>
+
+<div class="sections">
+    <ng-container *ngFor="let section of sections; let i = index" >
+        <!--style="height: 800px; background-color: blueviolet;"-->
+        <div *ngIf="(i % 2) == 0" class="sections-block d-flex justify-content-center">
+            <div style="width: 50%; background-image: url(/assets/images/landing/{{section.image}}.png); background-repeat: no-repeat; background-size: cover;">
+            </div>
+            <div style="width: 50%;" class="d-flex justify-content-center" >
+                <div class="d-flex flex-column">
+                    <div class="sections-title">{{section.title}}</div>
+                    <div class="sections-p">{{section.text}}</div>
+                    <div *ngIf="section.buttonTitle != ''" class="d-flex justify-content-center">
+                        <button mat-stroked-button class="sections-button" color="accent">{{section.buttonTitle}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="(i % 2) != 0" class="sections-block d-flex justify-content-center"> 
+            <div style="width: 50%;" class="d-flex justify-content-center">
+                <div class="d-flex flex-column">
+                    <div class="sections-title">{{section.title}}</div>
+                    <div class="sections-p">{{section.text}}</div>
+                    <div *ngIf="section.buttonTitle != ''" class="d-flex justify-content-center">
+                        <button mat-stroked-button class="sections-button" color="accent">{{section.buttonTitle}}</button>
+                    </div>
+                </div>
+            </div>
+            <div style="width: 50%; background-image: url(/assets/images/landing/{{section.image}}.png); background-repeat: no-repeat; background-size: cover;">
+            </div>
+        </div>
+    </ng-container>
+</div>
+
+<div class="comments d-flex justify-content-center">
+    <div class="d-flex flex-column">
+        <div class="comments-title">
+            Happy clients!
+        </div>
+        <div class="row comment-grid-container">
+            <ng-container *ngFor="let comment of comments; let i = index">
+                <div class="col-6 d-flex flex-column" style="padding: 0 30px 30px 30px">
+                    <div class="d-flex justify-content-center">
+                        <img src="{{comment.clientImage}}" style="width: 80px; border-radius: 50%; z-index: 10;">
+                    </div>
+                    <div class="comment-grid-tile">
+                        <div>{{comment.clientName}}</div>
+                        <div class="d-flex justify-content-center" style="margin: 8px;">
+                            <ng-container *ngFor="let star of comment.stars;">
+                                <img src="/assets/images/svg/star.svg">
+                            </ng-container>
+                        </div>
+                        <div>{{comment.text}}</div>
+                    </div> 
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>
+
+<div class="map d-flex justify-content-center">
+    <div class="d-flex flex-column">
+        <div class="book-title">
+            Here we are!
+        </div>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1769.3387810819604!2d-109.92597453247727!3d27.51040154398928!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x86c815dbaf444617%3A0x5f3c14dfd645b719!2sLa%20casa%20del%20Raul!5e0!3m2!1ses-419!2smx!4v1594024891697!5m2!1ses-419!2smx" 
+            width="600" height="450" frameborder="0" style="border:0;" 
+            allowfullscreen="" aria-hidden="false" tabindex="0">
+        </iframe>
+    </div>
+</div>
+
+<div class="book d-flex justify-content-center">
+    <div class="d-flex flex-column">
+        <div class="book-title">
+            Book today!
+        </div>
+        <div class="book-p">
+            Nunc interdum dolor ac dui imperdiet finibus. Praesent id tincidunt purus. Duis id convallis erat. Nulla convallis sem vulputate velit posuere feugiat. Donec pulvinar sapien dictum porttitor porttitor. Mauris sed mi ante. Curabitur ut lacus tincidunt, mattis quam quis, viverra lacus. 
+        </div>
+        <div class="d-flex justify-content-center">
+            <button mat-raised-button color="accent" class="book-button">BOOK!</button>
+        </div>
+    </div>
+</div>
+
+<div class="platforms d-flex justify-content-center">
+    <div class="d-flex flex-column">
+        <div class="platforms-title">
+            Find us in all our platforms!
+        </div>
+        <ng-container *ngFor="let button of platformButtons; let i = index">
+            <div class="platforms-button d-flex justify-content-center">
+                <a href="{{button.link}}" target="_blank">
+                    <button mat-raised-button>
+                        <img *ngIf="button.title == 'airbnb'" src="/assets/images/logos/{{button.title}}.png" style="width: 65%;"/>
+                        <img *ngIf="button.title == 'homie'" src="/assets/images/logos/{{button.title}}.png" style="width: 55%;"/>
+                        <img *ngIf="button.title != 'homie' && button.title != 'airbnb'" src="/assets/images/logos/{{button.title}}.png" style="width: 75%;"/>
+                    </button>
+                </a>
+            </div>
+        </ng-container>
+    </div>
+</div>
+
+<footer></footer>
+

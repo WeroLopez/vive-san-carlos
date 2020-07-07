@@ -1,0 +1,77 @@
+<navbar-admin></navbar-admin>
+
+<div style="height: 12px;"></div>
+
+<div class="row responsive-body">
+    
+    <!-- Title -->
+    <div class="col-12">
+        <div class="d-flex justify-content-center">
+            <div class="booking" style="text-align: center;">Clientes</div>    
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="d-flex justify-content-around">
+            <button mat-raised-button (click)="add()">Agregar</button>
+            <button mat-raised-button (click)="showBookings()" [disabled]="true">Ver Reservaciones</button>
+            <button mat-raised-button (click)="edit()" [disabled]="selectedClientIndex == -1">Editar</button>
+            <button mat-raised-button (click)="delete()" [disabled]="selectedClientIndex == -1">Eliminar</button>
+            <mat-form-field appearance="standard" style="width: 300px; margin-top: -20px;">
+                <mat-label>Buscar</mat-label>
+                <input matInput [(ngModel)]="searchtext" (ngModelChange)="search()" placeholder="Nombre">
+                <button mat-button *ngIf="searchtext" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
+                  <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
+            <button mat-raised-button (click)="filter()" [disabled]="true">Filtrar</button>
+        </div>
+    </div>
+
+    <div class="col-12" style="margin-top: 20px; width: 100%; text-align: center;">
+        <div class="row"> 
+            <div class="col-3">
+                <p class="table-header">NOMBRE</p>
+            </div>
+            <div class="col-3">
+                <p class="table-header">CORREO</p>
+            </div>
+            <div class="col-2">
+                <p class="table-header">TELÉFONO</p>
+            </div>
+            <div class="col-2">
+                <p class="table-header">PAÍS</p>
+            </div>
+            <div class="col-2">
+                <p class="table-header">CIUDAD</p>
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+    </div>
+    
+    <div class="col-12" style="height: 69vh; overflow-y: auto; width: 100%;">
+        <div *ngFor = "let client of clients; let i = index;" style="text-align: center; width: 100%;">
+            <div class="row table-row" (click)="selectClient(i)"
+                [ngClass]="{'table-row-selected': i == selectedClientIndex}"> 
+                <div class="col-3">
+                    <p>{{client.name}} {{client.lastname}}</p>
+                </div>
+                <div class="col-3">
+                    <p>{{client.email}}</p>
+                </div>
+                <div class="col-2">
+                    <p>{{client.telephone}}</p>
+                </div>
+                <div class="col-2">
+                    <p>{{client.country}}</p>
+                </div>
+                <div class="col-2">
+                    <p>{{client.city}}</p>
+                </div>
+            </div>
+            <mat-divider></mat-divider>
+        </div>
+    </div>
+
+</div>
+

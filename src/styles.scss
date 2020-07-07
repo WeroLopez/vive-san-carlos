@@ -1,0 +1,168 @@
+/* You can add global styles to this file, and also import other style files */
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.content {
+    display: inline-block;
+}
+
+/* ----------- Fonts ---------- */
+@font-face {
+    font-family: Signatra;
+    src: url(assets/fonts/Signatra.ttf) format("truetype");
+}
+/* ----------- Fonts ---------- */
+
+
+/* ----------- Scroll ---------- */
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 0px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+    background: #fff;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #eee;
+}
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #ccc;
+}
+/* ----------- Scroll ---------- */
+
+
+/* ----------- Navbar ---------- */
+#navbar {
+    background-color: #fff;
+    width: 100%;
+    height: 55px;
+    top: -55px;
+    position: fixed;
+    transition: top 0.3s;
+    z-index: 1000;
+    -webkit-box-shadow: 0px 3px 9px 0px rgba(0,0,0,0.22);
+    -moz-box-shadow: 0px 3px 9px 0px rgba(0,0,0,0.22);
+    box-shadow: 0px 3px 9px 0px rgba(0,0,0,0.22);
+}
+#navbar a {
+    float: left;
+    display: block;
+    color: #377294;
+    text-align: center;
+    padding: 15px;
+    text-decoration: none;
+    cursor: pointer;
+}
+#navbar a:hover {
+    color: #4FC2F0;
+}
+#navbar a:active {
+    color: #FFDF1E;
+}
+/* ----------- Navbar ---------- */
+
+/* ----------- Angular Material ---------- */
+button.mat-raised-button, button.mat-button, button.mat-flat-button {
+    border-radius: 20px;
+}
+.mat-divider {
+    border-top-color: #4FC2F0;
+}
+
+@import '~bootstrap/dist/css/bootstrap.min.css';
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@import '~@angular/material/theming';
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+$mat-azul: (
+    50 : #eaf8fd,
+    100 : #caedfb,
+    200 : #a7e1f8,
+    300 : #84d4f5,
+    400 : #69cbf2,
+    500 : #4fc2f0,
+    600 : #48bcee,
+    700 : #3fb4ec,
+    800 : #36ace9,
+    900 : #269fe5,
+    A100 : #ffffff,
+    A200 : #edf8ff,
+    A400 : #bae4ff,
+    A700 : #a1daff,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+$mat-amarillo: (
+    50 : #fffbe4,
+    100 : #fff5bc,
+    200 : #ffef8f,
+    300 : #ffe962,
+    400 : #ffe440,
+    500 : #ffdf1e,
+    600 : #ffdb1a,
+    700 : #ffd716,
+    800 : #ffd212,
+    900 : #ffca0a,
+    A100 : #ffffff,
+    A200 : #fffdf5,
+    A400 : #fff0c2,
+    A700 : #ffeaa8,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #ffffff,
+        600 : #000000,
+        700 : #000000,
+        800 : #000000,
+        900 : #000000,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$ViveSanCarlos-primary: mat-palette($mat-azul);
+$ViveSanCarlos-accent: mat-palette($mat-amarillo);
+
+// The warn palette is optional (defaults to red).
+$ViveSanCarlos-warn: mat-palette($mat-deep-orange);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$ViveSanCarlos-theme: mat-light-theme($ViveSanCarlos-primary, $ViveSanCarlos-accent, $ViveSanCarlos-warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($ViveSanCarlos-theme);
+
+/* ----------- Angular Material ---------- */
