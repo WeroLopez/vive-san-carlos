@@ -488,31 +488,20 @@ export class BookingComponent implements OnInit {
     this.bookings.forEach(booking => {
 
       let initialDate = booking.initialDate.toDate();
-      console.log(initialDate);
       let endDate = booking.endDate.toDate();
-      console.log(endDate);
       let iDay = initialDate.getDate();
       let jDay = endDate.getDate();
-      console.log(this.days);
-
-      //console.log("i " + iDay);
-      //console.log("j " + jDay);
-      console.log("first " + firstDay);
       for (let i = iDay + firstDay; i <= jDay + firstDay; i++) {
-        //console.log(i);
         this.days[i].state = booking.state;
-        //console.log(booking.state);
         this.days[i].selectedType = "middle";
         this.days[i].originalState = booking.state;
         this.days[i].originalSelectedType = "middle";
-        //console.log(this.days[i]);
       }
       this.days[iDay + firstDay].selectedType = "start";
       this.days[jDay + firstDay].selectedType = "end";
       this.days[iDay + firstDay].originalSelectedType = "start";
       this.days[jDay + firstDay].originalSelectedType = "end";
     });
-    //console.log(this.days);
   }
   /**
    * Paint a booking after saving it to firestore
