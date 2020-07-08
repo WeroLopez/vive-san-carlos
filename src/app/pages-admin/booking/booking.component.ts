@@ -456,22 +456,23 @@ export class BookingComponent implements OnInit {
    * @param date date to get the month to reload
    */
   reloadBookings(date: Date){
-    let initwhereDate = new Date(date.getFullYear(), date.getMonth(), 1)
-    let endWhereDate = new Date(date.getFullYear(), date.getMonth() + 1, 1)
-    this.bookings = []
-    let bookingsRef = this.db.collection("bookings")
+    let initwhereDate = new Date(date.getFullYear(), date.getMonth(), 1);
+    let endWhereDate = new Date(date.getFullYear(), date.getMonth() + 1, 1);
+    this.bookings = [];
+    let bookingsRef = this.db.collection("bookings");
     bookingsRef.ref.where("initialDate", ">=", initwhereDate).where("initialDate", "<", endWhereDate).orderBy('initialDate').get().then(snapshot => {
       snapshot.forEach(doc => {
         let pushBooking = doc.data() as Booking;
         pushBooking.id = doc.id;
         this.bookings.push(pushBooking);
-      })
+      });
+      console.log(this.bookings);
       this.reloadCalendarBookings();
     })
     .catch(err => {
       console.log('Error getting bookings', err);
       Constants.SAError("Error", "No se pudieron obtener las reservaciones de Firestore")
-    })
+    });
   }
   /**
    * Paint the bookings on the calendar
@@ -482,24 +483,36 @@ export class BookingComponent implements OnInit {
       day.selectedType = "none";
       day.originalState = "";
       day.originalSelectedType = "";
-    })
-    let firstDay = this.getFirstDay(this.date) - 1
+    });
+    let firstDay = this.getFirstDay(this.date) - 1;
     this.bookings.forEach(booking => {
-      let initialDate = booking.initialDate.toDate()
-      let endDate = booking.endDate.toDate()
-      let iDay = initialDate.getDate()
-      let jDay = endDate.getDate()
-      for (let i = iDay + firstDay; i <= jDay; i++) {
+
+      let initialDate = booking.initialDate.toDate();
+      console.log(initialDate);
+      let endDate = booking.endDate.toDate();
+      console.log(endDate);
+      let iDay = initialDate.getDate();
+      let jDay = endDate.getDate();
+      console.log(this.days);
+
+      //console.log("i " + iDay);
+      //console.log("j " + jDay);
+      console.log("first " + firstDay);
+      for (let i = iDay + firstDay; i <= jDay + firstDay; i++) {
+        //console.log(i);
         this.days[i].state = booking.state;
+        //console.log(booking.state);
         this.days[i].selectedType = "middle";
         this.days[i].originalState = booking.state;
         this.days[i].originalSelectedType = "middle";
+        //console.log(this.days[i]);
       }
       this.days[iDay + firstDay].selectedType = "start";
       this.days[jDay + firstDay].selectedType = "end";
       this.days[iDay + firstDay].originalSelectedType = "start";
       this.days[jDay + firstDay].originalSelectedType = "end";
-    })
+    });
+    //console.log(this.days);
   }
   /**
    * Paint a booking after saving it to firestore
