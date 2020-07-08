@@ -8,6 +8,7 @@
       ]
     },
     "array-type": false,
+    "prefer-const": false,
     "arrow-parens": false,
     "arrow-return-shorthand": true,
     "curly": true,
@@ -44,7 +45,7 @@
     "max-classes-per-file": false,
     "max-line-length": [
       true,
-      140
+      200
     ],
     "member-access": false,
     "member-ordering": [
@@ -83,7 +84,7 @@
     "object-literal-sort-keys": false,
     "ordered-imports": false,
     "quotemark": [
-      true,
+      false,
       "single"
     ],
     "semicolon": {

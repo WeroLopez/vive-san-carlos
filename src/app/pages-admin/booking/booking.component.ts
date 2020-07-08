@@ -56,16 +56,16 @@ export class BookingComponent implements OnInit {
   // ------------ calendar methods ------------ //
   /**
    * Reaload the calender with the month of the giving date
-   * @param date 
+   * @param date
    */
   reloadCalendar(date: Date){
     this.days = []
     this.updateCalendarHeader()
     let firstIndexOfMonth = this.getFirstDay(date)
     var daysCount = this.getDaysCount(date)
-    var calendarDate = new Date(this.date.getFullYear(), date.getMonth(), 1) 
+    var calendarDate = new Date(this.date.getFullYear(), date.getMonth(), 1)
     for (let i=0; i<daysCount+firstIndexOfMonth; i++){
-      let d = new Day() 
+      let d = new Day()
       if (i>=firstIndexOfMonth){
         d.date = this.addDays(calendarDate, i-firstIndexOfMonth)
         d.state = "blank"
@@ -92,8 +92,8 @@ export class BookingComponent implements OnInit {
   // ------------ selected methods ------------ //
   /**
    * What happens when user clicks a day cell
-   * @param index 
-   * @param day 
+   * @param index
+   * @param day
    */
   clickDay(index:number, day:Day){
     //id day is booked
@@ -165,8 +165,8 @@ export class BookingComponent implements OnInit {
   }
   /**
    * What happens when the mouse enters a day cell
-   * @param index 
-   * @param day 
+   * @param index
+   * @param day
    */
   mouseEnterDay(index:number, day:Day){
     if (this.firstDaySelected && !this.secondDaySelected) {
@@ -188,7 +188,7 @@ export class BookingComponent implements OnInit {
             case "booked": case "apart":
               this.days[i].state = "invalid"
               break
-            default: 
+            default:
               this.days[i].state = "selected"
               break
           }
@@ -212,34 +212,34 @@ export class BookingComponent implements OnInit {
   cleanHoverDays(){
     for (let i=0; i<this.days.length; i++){
       switch(this.days[i].state) {
-        case "selected": 
+        case "selected":
           this.days[i].state = "blank"
           this.days[i].selectedType = "none"
           break
-        case "bookedSelected": 
+        case "bookedSelected":
           this.days[i].state = "booked"
           break
-        case "apartSelected": 
+        case "apartSelected":
           this.days[i].state = "apart"
           break
         case "invalid":
           switch(this.days[i].originalState) {
-            case "booked": 
+            case "booked":
               this.days[i].state = "booked"
               break
-            case "apart": 
+            case "apart":
               this.days[i].state = "apart"
               break
             default: break
           }
           switch(this.days[i].originalSelectedType) {
-            case "start": 
+            case "start":
               this.days[i].selectedType = "start"
               break
             case "middle":
               this.days[i].selectedType = "middle"
               break
-            case "end": 
+            case "end":
               this.days[i].selectedType = "end"
               break
             default: break
@@ -282,7 +282,7 @@ export class BookingComponent implements OnInit {
           let lastBookedDay = this.secondDaySelected.date.getDate()
           for (let i=firstIndexOfMonth+firstBookedDay-1; i<=lastBookedDay; i++){
             switch(this.days[i].originalState) {
-              case "booked": 
+              case "booked":
                 this.days[i].state = "bookedSelected"
                 break
               case "apart":
@@ -315,8 +315,8 @@ export class BookingComponent implements OnInit {
     this.clearInfo()
   }
   // ------------ selected methods ------------ //
-  
-  
+
+
   // ---------------- buttons ----------------- //
   buttonSetLastMonth() {
     this.date = this.getLastMotnh(this.date)
@@ -365,10 +365,9 @@ export class BookingComponent implements OnInit {
   }
   getFirestoreDate(date: any):Date{
     try {
-      let d = date.toDate()
-      return d
+      return date.toDate();
     } catch(error) {
-      return date
+      return date;
     }
   }
   // ------------- date functions ------------- //
@@ -378,25 +377,25 @@ export class BookingComponent implements OnInit {
   /**
    * Save a booking to firestore
    */
-  book() { 
+  book() {
     if (this.verifyData()){
       Constants.SAQuestion("¿Confirmar reservación?", "", false).then((result) => {
         if (result.value) {
-          let booking = new Booking()
-          booking.clientId = this.selectedClient.id
-          booking.initialDate = new Date(this.firstDaySelected.date.getFullYear(), this.firstDaySelected.date.getMonth(), this.firstDaySelected.date.getDate()) 
-          booking.endDate = new Date(this.secondDaySelected.date.getFullYear(), this.secondDaySelected.date.getMonth(), this.secondDaySelected.date.getDate()) 
-          booking.total = +this.totalPrice
-          booking.payed = +this.totalPrice
-          booking.state = "booked"
+          let booking = new Booking();
+          booking.clientId = this.selectedClient.id;
+          booking.initialDate = new Date(this.firstDaySelected.date.getFullYear(), this.firstDaySelected.date.getMonth(), this.firstDaySelected.date.getDate());
+          booking.endDate = new Date(this.secondDaySelected.date.getFullYear(), this.secondDaySelected.date.getMonth(), this.secondDaySelected.date.getDate());
+          booking.total = +this.totalPrice;
+          booking.payed = +this.totalPrice;
+          booking.state = "booked";
           this.db.collection('bookings').add({...booking}).then(ref => {
             console.log('Added document with ID: ', ref.id);
-            booking.id = ref.id
-            this.bookings.push(booking)
-            Constants.SAGood("Éxito", "Reservación agendada.")
-            this.showNewBooking(booking)
-            this.deSelectDays()
-            this.clearInfo()
+            booking.id = ref.id;
+            this.bookings.push(booking);
+            Constants.SAGood("Éxito", "Reservación agendada.");
+            this.showNewBooking(booking);
+            this.deSelectDays();
+            this.clearInfo();
           }).catch(error => {
             console.log(error);
             Constants.SAError("Error al guardar", Constants.firestoreError)
@@ -408,25 +407,25 @@ export class BookingComponent implements OnInit {
   /**
    * Save an aparted to firestore
    */
-  apart() { 
+  apart() {
     if (this.verifyData()){
       Constants.SAPriceQuestion("¿Con cuánto anticipo se va a apartar?", "").then( result => {
         if (result.value) {
           let booking = new Booking()
-          booking.clientId = this.selectedClient.id
-          booking.initialDate = this.firstDaySelected.date
-          booking.endDate = this.secondDaySelected.date
-          booking.total = +this.totalPrice
-          booking.payed = +result.value
-          booking.state = "apart"
+          booking.clientId = this.selectedClient.id;
+          booking.initialDate = this.firstDaySelected.date;
+          booking.endDate = this.secondDaySelected.date;
+          booking.total = +this.totalPrice;
+          booking.payed = +result.value;
+          booking.state = "apart";
           this.db.collection('bookings').add({...booking}).then(ref => {
             console.log('Added document with ID: ', ref.id);
-            booking.id = ref.id
+            booking.id = ref.id;
             this.bookings.push(booking)
-            Constants.SAGood("Éxito", "Fecha apartada.")
-            this.showNewBooking(booking)
-            this.deSelectDays()
-            this.clearInfo()
+            Constants.SAGood("Éxito", "Fecha apartada.");
+            this.showNewBooking(booking);
+            this.deSelectDays();
+            this.clearInfo();
           }).catch(error => {
             console.log(error);
             Constants.SAError("Error al guardar", Constants.firestoreError)
@@ -438,22 +437,22 @@ export class BookingComponent implements OnInit {
   verifyData(){
     let msg = ""
     if(!this.selectedClient) {
-      msg += "Se requiere Cliente<br>"
+      msg += "Se requiere Cliente<br>";
     }
     if(!this.firstDaySelected || !this.secondDaySelected) {
-      msg += "Seleccione un rango de días<br>"
+      msg += "Seleccione un rango de días<br>";
     }
-    if(this.totalPrice == "ERROR") {
-      msg += "Hay error en el precio total<br>"
+    if(this.totalPrice === "ERROR") {
+      msg += "Hay error en el precio total<br>";;
     }
     if (msg) {
-      Constants.SAError("Error", msg)
-      return false
+      Constants.SAError("Error", msg);
+      return false;
     }
-    return true
+    return true;
   }
   /**
-   * Get the bookings from firestore from giving month
+   * Get the bookings from firestore from given month
    * @param date date to get the month to reload
    */
   reloadBookings(date: Date){
@@ -463,11 +462,11 @@ export class BookingComponent implements OnInit {
     let bookingsRef = this.db.collection("bookings")
     bookingsRef.ref.where("initialDate", ">=", initwhereDate).where("initialDate", "<", endWhereDate).orderBy('initialDate').get().then(snapshot => {
       snapshot.forEach(doc => {
-        let pushBooking = doc.data() as Booking
-        pushBooking.id = doc.id
-        this.bookings.push(pushBooking)
+        let pushBooking = doc.data() as Booking;
+        pushBooking.id = doc.id;
+        this.bookings.push(pushBooking);
       })
-      this.reloadCalendarBookings()
+      this.reloadCalendarBookings();
     })
     .catch(err => {
       console.log('Error getting bookings', err);
@@ -475,14 +474,14 @@ export class BookingComponent implements OnInit {
     })
   }
   /**
-   * Paint the bookings on the calendar 
+   * Paint the bookings on the calendar
    */
   reloadCalendarBookings(){
     this.days.forEach(day => {
-      day.state = "blank"
-      day.selectedType = "none"
-      day.originalState = ""
-      day.originalSelectedType = ""
+      day.state = "blank";
+      day.selectedType = "none";
+      day.originalState = "";
+      day.originalSelectedType = "";
     })
     let firstDay = this.getFirstDay(this.date) - 1
     this.bookings.forEach(booking => {
@@ -491,32 +490,39 @@ export class BookingComponent implements OnInit {
       let iDay = initialDate.getDate()
       let jDay = endDate.getDate()
       for (let i = iDay + firstDay; i <= jDay; i++) {
-        this.days[i].state = booking.state
-        this.days[i].selectedType = "middle"
-        this.days[i].originalState = booking.state
-        this.days[i].originalSelectedType = "middle"
+        this.days[i].state = booking.state;
+        this.days[i].selectedType = "middle";
+        this.days[i].originalState = booking.state;
+        this.days[i].originalSelectedType = "middle";
       }
-      this.days[iDay+firstDay].selectedType = "start"
-      this.days[jDay+firstDay].selectedType = "end"
-      this.days[iDay+firstDay].originalSelectedType = "start"
-      this.days[jDay+firstDay].originalSelectedType = "end"
+      this.days[iDay + firstDay].selectedType = "start";
+      this.days[jDay + firstDay].selectedType = "end";
+      this.days[iDay + firstDay].originalSelectedType = "start";
+      this.days[jDay + firstDay].originalSelectedType = "end";
     })
   }
   /**
    * Paint a booking after saving it to firestore
-   * @param booking 
+   * @param booking
    */
   showNewBooking(booking: Booking){
-    let firstDay = this.getFirstDay(this.date) - 1
-    let initialDate = this.getFirestoreDate(booking.initialDate)
-    let endDate = this.getFirestoreDate(booking.endDate)
-    let iDay = initialDate.getDate()
-    let jDay = endDate.getDate()
+    let firstDay = this.getFirstDay(this.date) - 1;
+    let initialDate = this.getFirestoreDate(booking.initialDate);
+    let endDate = this.getFirestoreDate(booking.endDate);
+    let iDay = initialDate.getDate();
+    let jDay = endDate.getDate();
+    console.log(iDay);
+    console.log(firstDay);
+    console.log(jDay);
     for (let i = iDay + firstDay; i <= jDay; i++) {
       this.days[i].state = booking.state
       this.days[i].originalState = booking.state
     }
+
+
   }
+
+
   deleteBooking() {
     let state = this.selectedBooking.state
     let title = "¿Eliminar " + (state == "booked" ? "reservación?" : "apartado?")
@@ -548,10 +554,10 @@ export class BookingComponent implements OnInit {
   liquidate() {
     Constants.SAQuestion("¿Confirmar liquidación?", "", false).then((result) => {
       if (result.value) {
-        let update = { 
+        let update = {
           payed: this.selectedBooking.total,
           total: this.selectedBooking.total,
-          state: "booked" 
+          state: "booked"
         }
         this.db.collection('bookings').doc(this.selectedBooking.id).update(update).then(ref => {
           console.log('Edited document with ID: ', this.selectedBooking.id)
@@ -581,7 +587,7 @@ export class BookingComponent implements OnInit {
       if (castedPrice) {
         this.totalDays = 1 + this.dateDiffInDays(this.firstDaySelected.date, this.secondDaySelected.date)
         this.totalPrice = ((castedPrice * this.totalDays * 100) / 100).toFixed(2)
-      } 
+      }
       else{
         this.totalPrice = "ERROR"
       }
@@ -592,8 +598,8 @@ export class BookingComponent implements OnInit {
     }
   }
   // ---------------- Pricing ----------------- //
-  
-  
+
+
   // ---------------- Clients ----------------- //
   /**
    * Get the clients from firestore
